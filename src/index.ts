@@ -34,7 +34,8 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
   }
   try {
     const decoded = jwt.verify(authHeader, process.env.JWT_SECRET);
-    (req as any).userId = decoded.id;
+    // Ensure userId is treated as a number
+    (req as any).userId = Number(decoded.id);
     next();
   } catch (error) {
     res.status(500).json({ message: 'Invalid token' });
@@ -187,7 +188,8 @@ app.post('/api/v1/blog', authenticate, async (req: Request, res: Response) => {
   }
 
   try {
-    const userId = (req as any).userId;
+    // Ensure userId is a number
+    const userId = Number((req as any).userId);
     const post = await prisma.post.create({
       data: {
         title: result.data.title,
@@ -213,10 +215,13 @@ app.put('/api/v1/blog', authenticate, async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Invalid input'});
   }
   try {
-    const userId = (req as any).userId;
+    // Ensure userId is a number
+    const userId = Number((req as any).userId);
+    // Ensure id is a number
+    const postId = Number(result.data.id);
     await prisma.post.update({
       where: {
-        id: result.data.id,
+        id: postId,
         authorId: userId,
       },
       data: {
@@ -277,7 +282,7 @@ app.get('/api/v1/blog/:id', authenticate, async (req: Request, res: Response) =>
 
 
 
-app.get('/api/v1/all-blog', authenticate, async (req: Request, res: Response) => {
+app.get('/api/v1/all-blog', authenticate, async (_req: Request, res: Response) => {
   try {
     const posts = await prisma.post.findMany({
       select: {
