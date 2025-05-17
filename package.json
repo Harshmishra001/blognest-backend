@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc -b",
+    "postinstall": "npx prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@mohit-kumar/common-zod-all": "^1.0.0",
+    "@prisma/client": "^5.18.0",
+    "@types/express": "^4.17.21",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.18.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.4",
+    "esbuild": "^0.25.4"
+  }
+}
